@@ -201,8 +201,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 ---
 
-## 🖼️ Diagram: Repository + Dapper + Caching Integration (Preview for CO2)
-
+## 🖼️ Diagram: Repository + Dapper + Caching Integration
 ```mermaid
 sequenceDiagram
     participant Client
