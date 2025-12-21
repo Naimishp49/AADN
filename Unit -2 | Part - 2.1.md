@@ -187,31 +187,6 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 ```
 
 ---
-
-### 🧪 Unit Testing with Moq (Preview for CO3)
-```csharp
-[Fact]
-public async Task GetProduct_ReturnsCorrectProduct()
-{
-    // Arrange
-    var mockRepo = new Mock<IProductRepository>();
-    mockRepo.Setup(r => r.GetByIdAsync(1))
-            .ReturnsAsync(new Product { Id = 1, Name = "Laptop" });
-
-    var service = new ProductService(mockRepo.Object);
-
-    // Act
-    var result = await service.GetProductAsync(1);
-
-    // Assert
-    Assert.Equal("Laptop", result.Name);
-}
-```
-
-> ✅ Combines **CO2 (Dapper + Repo)** and **CO3 (Moq testing)**.
-
----
-
 ## 📊 Comparison: Dapper vs EF Core (for Microservices)
 
 | Feature | Dapper | EF Core |
