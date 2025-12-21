@@ -12,43 +12,7 @@
 
 ---
 
-## 🌐 Architecture Diagram: Serilog in a Microservice
 
-```mermaid
-flowchart LR
-    A[Application Code] -->|Log.Information("Order {OrderId} created", id)| B[Serilog ILogger]
-    B --> C[Enrichers]
-    C -->|Add: TraceId, UserId, MachineName| D[Pipeline]
-    D --> E[Sinks]
-    
-    subgraph Enrichers
-        E1[WithProperty("TraceId")]
-        E2[WithMachineName()]
-        E3[WithThreadId()]
-    end
-
-    subgraph Sinks
-        S1[Console]
-        S2[File: logs/app-.log]
-        S3[Seq (Local Dashboard)]
-        S4[Azure Application Insights]
-    end
-
-    D --> S1
-    D --> S2
-    D --> S3
-    D --> S4
-
-    style A fill:#ffe58f
-    style B fill:#b7eb8f
-    style C fill:#ffd8bf
-    style D fill:#d9d9d9
-    style S3 fill:#69c0ff,stroke:#1890ff
-```
-
-> ✅ Logs flow: **Code → ILogger → Enrichment → Routing → Sinks**
-
----
 
 ## 🛠️ Step-by-Step Setup in .NET 8 (Minimal API)
 
