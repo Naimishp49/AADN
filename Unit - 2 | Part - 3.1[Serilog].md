@@ -1,12 +1,3 @@
-Here's a **detailed, syllabus-aligned guide on Serilog in .NET Core**, covering **Logging Essentials** from **Topic 2: Data Access, Caching & Logging**, enriched with:
-
-✅ **Concepts & Best Practices**  
-✅ **Mermaid diagrams** (architecture & flow)  
-✅ **End-to-end example code** (setup, structured logging, sinks, correlation)  
-✅ Mapping to **CO2**: *“Implement Dapper CRUD, caching, and structured logging”*
-
----
-
 ## 🔹 Why Serilog? (vs `ILogger<T>` default)
 
 | Feature | Default `Microsoft.Extensions.Logging` | **Serilog** |
@@ -219,7 +210,7 @@ sequenceDiagram
 
 ---
 
-## 🧪 Logging with Dapper (Full CO2 Integration)
+## 🧪 Logging with Dapper
 
 ```csharp
 public class ProductRepository : IProductRepository
@@ -301,18 +292,6 @@ Then in `Program.cs`:
 builder.Host.UseSerilog((ctx, config) => 
     config.ReadFrom.Configuration(ctx.Configuration));
 ```
-
----
-
-## 📈 CO–PO Mapping Support
-
-| Outcome | How Serilog Helps |
-|--------|-------------------|
-| **CO2**: Implement structured logging | ✅ Structured properties, correlation IDs, sinks |
-| **PO1 (Engineering Knowledge)** | Applies logging best practices in real systems |
-| **PO3 (Problem Analysis)** | Enables log-based debugging & RCA |
-| **PO5 (Modern Tool Usage)** | Industry tools (Seq, ELK, App Insights) |
-
 ---
 
 ## 🖼️ Quick Reference: Serilog Template Tokens
