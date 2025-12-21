@@ -81,7 +81,3 @@ At the end of this course, students will be able to:
 5. **Pro ASP.NET Core 6** – Adam Freeman (9th Ed., Apress)
 
 > **Note**: Laboratory work will be based on the above syllabus, with a minimum number of required experiments/exercises incorporated.
-
-```
-
-Let me know if you’d like this exported as a downloadable `.md` file or need it formatted for a specific platform (e.g., GitHub, Obsidian, Notion).
