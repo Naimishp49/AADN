@@ -10,7 +10,7 @@
 4. Monolith vs Microservices 
 5. E-Commerce Project Architecture Sample
 6. Microservices Demo
-7. Step-By-Step: Creating Microservices
+7. Step-By-Step: Creating Microservices 
 ---
 
 # 1. What Are Distributed Systems?
