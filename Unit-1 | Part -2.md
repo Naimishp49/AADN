@@ -1,5 +1,77 @@
 ## 2501CS634 - Advanced .NET with Modern Architectures | Sem. - 6
 # **Unit-1 | Fundamentals of Distributed Systems & Microservices**
+
+## 🔹 Core Microservice Design Concepts
+
+| Concept | Description | .NET Core Relevance |
+|--------|-------------|---------------------|
+| **Single Responsibility** | Each service should own a specific business capability and be independently deployable. | Encouraged via clean project structure (e.g., separate API projects per bounded context). |
+| **Domain-Driven Design (DDD)** | Services are modeled around business domains using aggregates, entities, value objects, and bounded contexts. | Tools: MediatR, CQRS, AutoMapper help enforce DDD patterns. |
+| **Decentralized Data Management** | Each microservice owns its private database (no shared DB). | Use Entity Framework Core/Dapper per service; avoid cross-service DB joins. |
+| **Resilience & Fault Tolerance** | Services must handle failures gracefully (e.g., retries, circuit breakers). | Libraries: **Polly** for retry/backoff/circuit-breaking policies. |
+| **Observability** | Logging, metrics, and tracing must be built-in. | Use **Serilog** + **OpenTelemetry** + **Seq/Grafana/Prometheus**. |
+| **API Gateway Pattern** | Single entry point to route requests, handle auth, rate-limiting, etc. | Implement using **YARP (Yet Another Reverse Proxy)** or **Ocelot**. |
+| **Service Discovery** | Dynamic location of service instances (esp. in containers/K8s). | **Consul**, **Eureka (via Steeltoe)**, or Kubernetes-native DNS. |
+
+---
+
+## 🔹 Microservice Architecture Components (in .NET Core Ecosystem)
+
+| Component | Purpose | Typical .NET Core Tools/Libraries |
+|----------|---------|-----------------------------------|
+| **API Gateway** | Entry point, routing, composition, auth | YARP, Ocelot |
+| **Service Registry** | Maintain list of available service instances | Consul, etcd, Steeltoe + Eureka |
+| **Config Server** | Centralized config (e.g., per env) | Steeltoe Config Server (Spring Cloud Config integration) |
+| **Message Broker** | Async communication (events, commands) | **RabbitMQ**, **Azure Service Bus**, **Kafka (.NET clients)** |
+| **Distributed Tracing** | End-to-end request tracking | **OpenTelemetry** + Jaeger/Zipkin |
+| **Health Checks** | Monitor service liveness/readiness | Built-in `Microsoft.Extensions.Diagnostics.HealthChecks` |
+| **Circuit Breaker & Retry** | Prevent cascading failures | **Polly** |
+| **Authentication/Authorization** | Secure inter-service & user access | **IdentityServer4 / Duende IdentityServer**, JWT Bearer auth |
+
+> 🧩 Bonus: **.NET Aspire** (preview in .NET 8/9) simplifies building & orchestrating distributed apps (incl. service discovery, config, secrets, dashboard).
+
+---
+
+## 🔹 Communication Patterns in .NET Core Microservices
+
+### 1. **Synchronous (Request–Response)**  
+- Used for real-time interaction (e.g., UI → API).
+- **Protocols**: HTTP/REST, gRPC.
+- **Tools**:
+  - **REST**: Minimal APIs, Controllers, `HttpClient` + `IHttpClientFactory`.
+  - **gRPC**: High-performance, contract-first (`.proto`), ideal for internal service-to-service.
+    ```csharp
+    // Client factory injection
+    services.AddGrpcClient<Greeter.GreeterClient>(o => o.Address = new Uri("https://greeter:5001"));
+    ```
+
+### 2. **Asynchronous (Event-Driven)**  
+- Decouples services via messages/events.
+- **Patterns**:
+  - **Publish/Subscribe** (1→many): e.g., “OrderPlaced” event.
+  - **Point-to-Point** (1→1): e.g., command “ProcessPayment”.
+- **Tools**:
+  - **RabbitMQ** with `RabbitMQ.Client` or `MassTransit` (recommended).
+  - **Azure Service Bus** with `Azure.Messaging.ServiceBus`.
+  ```csharp
+  // MassTransit + RabbitMQ consumer
+  services.AddMassTransit(x =>
+  {
+      x.AddConsumer<OrderPlacedConsumer>();
+      x.UsingRabbitMq((ctx, cfg) => cfg.ConfigureEndpoints(ctx));
+  });
+  ```
+
+### 3. **Hybrid Patterns**
+| Pattern | Use Case | .NET Example |
+|--------|----------|--------------|
+| **Saga (Orchestration/Choreography)** | Long-running distributed transactions | Use events (choreography) or a Saga orchestrator (e.g., MassTransit sagas). |
+| **CQRS** | Separate reads (queries) and writes (commands) | MediatR + separate query/command handlers per service. |
+| **Event Sourcing** | Store state changes as event log (for audit/replay) | Use **EventStoreDB** or relational store + custom projection. |
+
+---
+
+
 # Domain-Driven Design (DDD) & Microservices
 
 ## 1. What is Domain-Driven Design (DDD)?
@@ -218,13 +290,5 @@ University ERP is a real-life example where DDD is essential.
 * Same term can have different meanings in different contexts
 * Microservices are the implementation result of DDD
 * No direct database sharing between services
-
 ---
 
-## 8. Final Conclusion (Write for Full Marks)
-
-Domain-Driven Design helps in building scalable, maintainable, and business-aligned software systems. It is especially useful for complex applications like Hospital Management Systems and University ERP. DDD naturally leads to microservices architecture by identifying clear bounded contexts and responsibilities.
-
----
-
-*These notes are suitable for handwritten exams, viva, and lab submissions.*
